@@ -19,7 +19,8 @@ class VisualizationApp {
       table: [],
       sphere: [],
       helix: [],
-      grid: []
+      grid: [],
+      tetrahedron: []
     };
     this.currentLayout = 'table';
 
@@ -151,6 +152,9 @@ class VisualizationApp {
 
     // Grid layout (5x4x10)
     this.calculateGridLayout(data);
+
+    // Tetrahedron layout
+    this.calculateTetrahedronLayout(data);
   }
 
   /**
@@ -283,6 +287,66 @@ class VisualizationApp {
     });
 
     this.targets.grid = grid;
+  }/**
+   * Calculate Tetrahedron (Pyramid) layout
+   * Stacks cards in triangular layers: 1, 3, 6, 10, 15...
+   */
+  calculateTetrahedronLayout(data) {
+    const tetrahedron = [];
+    const spacing = 180;  // Horizontal distance between cards
+    const height = 160;   // Vertical distance between layers
+    
+    // Counters to track where we are in the pyramid
+    let layer = 1; // Current horizontal layer (1 = top)
+    let row = 0;   // Current row within the triangle layer
+    let col = 0;   // Current item within the row
+
+    data.forEach((item) => {
+      const object = new THREE.Object3D();
+
+      // --- 1. Manage the Pyramid Counters ---
+      // If we finish a row (col > row), move to next row
+      if (col > row) {
+        col = 0;
+        row++;
+      }
+      // If we finish a layer (row >= layer), move to next layer (downwards)
+      if (row >= layer) {
+        row = 0;
+        col = 0;
+        layer++;
+      }
+
+      // --- 2. Calculate Position ---
+      
+      // X: Centers the row horizontally
+      // (col - row/2) shifts the row to be symmetrical
+      object.position.x = (col - row / 2) * spacing;
+
+      // Z: Centers the triangle depth-wise
+      // (row - layer/2) shifts the triangle to be centered
+      object.position.z = (row - layer / 2) * spacing;
+
+      // Y: Moves down for each layer. 
+      // +600 starts it higher up so it's centered on screen
+      object.position.y = -(layer * height) + 600;
+
+      // --- 3. Orientation ---
+      // Make the card face forward (flat) or tilt slightly if you prefer
+      // For now, flat is easiest to read
+      const vector = new THREE.Vector3();
+      
+      // Optional: Uncomment this if you want them to face the center
+      // vector.copy(object.position).multiplyScalar(2); 
+      // object.lookAt(vector);
+
+      tetrahedron.push(object);
+
+      // Increment column for next card
+      col++;
+    });
+
+    this.targets.tetrahedron = tetrahedron;
   }
 
   /**
