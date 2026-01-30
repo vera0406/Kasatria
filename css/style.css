@@ -273,7 +273,7 @@ body {
 .legend-container {
     position: absolute;
     bottom: 40px;            /* Distance from bottom */
-    left: 75%;
+    left: 80%;
     transform: translateX(-50%); /* Centers it perfectly */
     z-index: 1000;           /* Ensures it sits on top of 3D objects */
     

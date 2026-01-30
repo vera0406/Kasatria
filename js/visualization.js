@@ -287,7 +287,9 @@ class VisualizationApp {
     });
 
     this.targets.grid = grid;
-  }/**
+  }
+  
+  /**
    * Calculate Tetrahedron (Pyramid) layout
    * Stacks cards in triangular layers: 1, 3, 6, 10, 15...
    */
@@ -329,7 +331,7 @@ class VisualizationApp {
 
       // Y: Moves down for each layer. 
       // +600 starts it higher up so it's centered on screen
-      object.position.y = -(layer * height) + 600;
+      object.position.y = -(layer * height) + 900;
 
       // --- 3. Orientation ---
       // Make the card face forward (flat) or tilt slightly if you prefer
