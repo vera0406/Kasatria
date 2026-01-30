@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Data Visualization - Test Mode</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <div class="app-header">
+      <div class="app-title">3D Data Visualization (Test Mode - No Login Required)</div>
+      <div class="user-info">
+        <img class="user-avatar" src="https://i.pravatar.cc/40?img=1" alt="Test User">
+        <span class="user-name">Test User</span>
+      </div>
+    </div>
+
+    <!-- 3D Visualization Container -->
+    <div id="visualization-container"></div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="control-btn active" data-view="table" onclick="changeView('table')">TABLE</button>
+      <button class="control-btn" data-view="sphere" onclick="changeView('sphere')">SPHERE</button>
+      <button class="control-btn" data-view="helix" onclick="changeView('helix')">HELIX</button>
+      <button class="control-btn" data-view="grid" onclick="changeView('grid')">GRID</button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <div>Loading data...</div>
+    </div>
+  </div>
+
+  <!-- TWEEN.js for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+
+  <!-- PapaParse for CSV parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <!-- Configuration -->
+  <script src="config.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="js/data.js"></script>
+
+  <!-- Three.js with CSS3D as ES6 module -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="js/visualization.js"></script>
+  <script type="module" src="js/app.js"></script>
+
+  <script>
+    // Change visualization view
+    function changeView(viewType) {
+      if (window.visualizationApp) {
+        window.visualizationApp.changeLayout(viewType);
+
+        // Update active button
+        document.querySelectorAll('.control-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        document.querySelector(`[data-view="${viewType}"]`).classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>
